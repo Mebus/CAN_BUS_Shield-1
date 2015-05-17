@@ -3,8 +3,8 @@
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Author:Loovee
-  Contributor: Cory J. Fowler
-  2014-1-16
+  Contributor: Cory J. Fowler, Florian Knodt
+  2015-05-17
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -26,6 +26,7 @@
 #include "mcp_can_dfs.h"
 
 #define MAX_CHAR_IN_MESSAGE 8
+#define MCP_PCA_TXSTBY 1
 
 class MCP_CAN
 {

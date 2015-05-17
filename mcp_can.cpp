@@ -3,8 +3,8 @@
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Author:Loovee
-  Contributor: Cory J. Fowler
-  2014-1-16
+  Contributor: Cory J. Fowler, Florian Knodt
+  2015-05-17
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -389,6 +389,16 @@ INT8U MCP_CAN::mcp2515_init(const INT8U canSpeed)                       /* mcp25
         mcp2515_modifyRegister(MCP_RXB1CTRL, MCP_RXB_RX_MASK,
         MCP_RXB_RX_STDEXT);
 #endif
+
+#if defined (MCP_PCA_TXSTBY)
+									/* Set RX0BF as GPIO 		*/
+	mcp2515_modifyRegister(MCP_BFPCTRL, 
+		B0BFM | B0BFE  | B0BFS ,
+		B0BFE
+	 );
+	
+#endif
+								
                                                                         /* enter normal mode            */
         res = mcp2515_setCANCTRL_Mode(MODE_NORMAL);                                                                
         if(res)
@@ -520,6 +530,9 @@ void MCP_CAN::mcp2515_read_canMsg( const INT8U buffer_sidh_addr)        /* read 
 void MCP_CAN::mcp2515_start_transmit(const INT8U mcp_addr)              /* start transmit               */
 {
     mcp2515_modifyRegister( mcp_addr-1 , MCP_TXB_TXREQ_M, MCP_TXB_TXREQ_M );
+    #if defined (MCP_PCA_TXSTBY)
+        mcp2515_modifyRegister( MCP_BFPCTRL, B0BFS, 0);
+    #endif
 }
 
 /*********************************************************************************************************
