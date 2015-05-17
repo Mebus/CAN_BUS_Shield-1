@@ -3,8 +3,8 @@
   2012 Copyright (c) Seeed Technology Inc.  All right reserved.
 
   Author:Loovee
-  Contributor: Cory J. Fowler
-  2014-1-16
+  Contributor: Cory J. Fowler, Florian Knodt
+  2015-05-17
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -105,6 +105,8 @@
 #define MCP_RXF2SIDL    0x09
 #define MCP_RXF2EID8    0x0A
 #define MCP_RXF2EID0    0x0B
+#define MCP_BFPCTRL	0x0C
+#define MCP_TXRTSCTRL	0x0D
 #define MCP_CANSTAT     0x0E
 #define MCP_CANCTRL     0x0F
 #define MCP_RXF3SIDH    0x10
