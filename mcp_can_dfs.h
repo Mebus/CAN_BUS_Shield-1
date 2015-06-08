@@ -355,7 +355,7 @@
 #define MCP_RXBUF_1 (MCP_RXB1SIDH)
 
 //#define SPICS 10
-#define MCP2515_SELECT()   digitalWrite(SPICS, LOW)
+#define MCP2CAN_125KBPS515_SELECT()   digitalWrite(SPICS, LOW)
 #define MCP2515_UNSELECT() digitalWrite(SPICS, HIGH)
 
 #define MCP2515_OK         (0)
@@ -397,6 +397,7 @@
 #define CAN_250KBPS  14
 #define CAN_500KBPS  15
 #define CAN_1000KBPS 16
+#define CAN_125KBPS_4MHz  17
 
 #define CAN_OK                  (0)
 #define CAN_FAILINIT            (1)
