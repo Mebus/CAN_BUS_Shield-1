@@ -235,6 +235,12 @@ INT8U MCP_CAN::mcp2515_configRate(const INT8U canSpeed)
         cfg3 = MCP_16MHz_125kBPS_CFG3;
         break;
 
+        case (CAN_125KBPS_4MHz):
+        cfg1 = MCP_4MHz_125kBPS_CFG1;
+        cfg2 = MCP_4MHz_125kBPS_CFG2;
+        cfg3 = MCP_4MHz_125kBPS_CFG3;
+        break;
+
         case (CAN_200KBPS):
         cfg1 = MCP_16MHz_200kBPS_CFG1;
         cfg2 = MCP_16MHz_200kBPS_CFG2;
