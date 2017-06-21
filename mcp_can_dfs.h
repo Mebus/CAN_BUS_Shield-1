@@ -117,6 +117,8 @@
 #define MCP_RXF2SIDL    0x09
 #define MCP_RXF2EID8    0x0A
 #define MCP_RXF2EID0    0x0B
+#define MCP_BFPCTRL     0x0C
+#define MCP_TXRTSCTRL	0x0D
 #define MCP_CANSTAT     0x0E
 #define MCP_CANCTRL     0x0F
 #define MCP_RXF3SIDH    0x10
@@ -236,6 +238,27 @@
 #define MCP_WAKIF       0x40
 #define MCP_MERRF       0x80
 
+
+// BFPCTRL Register Bits
+ 
+#define B1BFS           0x20
+#define B0BFS           0x10
+#define B1BFE           0x08
+#define B0BFE           0x04
+#define B1BFM           0x02
+#define B0BFM           0x01
+ 
+ 
+ //TXRTCTRL Register Bits
+ 
+#define B2RTS           0x20
+#define B1RTS           0x10
+#define B0RTS           0x08
+#define B2RTSM          0x04
+#define B1RTSM          0x02
+#define B0RTSM          0x01
+ 
+ 
 // speed 16M
 
 #define MCP_16MHz_1000kBPS_CFG1 (0x00)

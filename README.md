@@ -1,13 +1,27 @@
 CAN BUS Shield
 ---------------------------------------------------------
-[![CAN BUS Shield](http://www.seeedstudio.com/depot/images/1130300211.jpg)](http://www.seeedstudio.com/depot/wifi-bee-v20-p-1637.html)
 
-
-
-<br>
+# Fork Details
 This fork of Seeed-Studios CAN shield library abopts little enhancements to interface 3rd party boards. Current changes:
 
-- Use TX/RX-interrupt-pins as GPIO
+## Use TX/RX-interrupt-pins as GPIO
+
+The TX and RC interrupt pins of a MCP2515 can be used as generic GPIO. This changes add the capability to control the pins using the following commands:
+
+```c
+// Set RX0BF as GPIO
+mcp2515_modifyRegister(MCP_BFPCTRL, B0BFM | B0BFE  | B0BFS, B0BFE);
+
+//Turn RX0BF on
+mcp2515_modifyRegister( MCP_BFPCTRL, B0BFS, 0);
+
+//Turn RX0BF off
+mcp2515_modifyRegister( MCP_BFPCTRL, B0BFS, 1);
+```
+
+Same goes for B**1**BF…
+
+You can - for example - connect RX0BF to the Rs-pin of an PCA82C250 and use this GPIO to shutdown the transceiver on TX-only- or polling nodes saving additional power.
 
 <br>
 CAN-BUS is a common industrial bus because of its long travel distance, medium communication speed and high reliability. It is commonly found on modern machine tools and as an automotive diagnostic bus. The Seeed-Studio CAN-BUS Shield adopts MCP2515 CAN Bus controller with SPI interface and MCP2551 CAN transceiver to give your Arduino/Seeeduino CAN-BUS capibility. With an OBD-II converter cable added on and the OBD-II library imported, you are ready to build an onboard diagnostic device or data logger.
