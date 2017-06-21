@@ -1,19 +1,18 @@
 // demo: CAN-BUS Shield, receive data with interrupt mode
-// when in interrupt mode, the data coming can't be too fast, must >20ms, or else you can use check mode
+// when in interrupt mode, the data coming can't be too fast, must >20ms, 
+// or else you can use check mode
 // loovee, 2014-6-13
-
 #include <SPI.h>
 #include "mcp_can.h"
 
 // the cs pin of the version after v1.1 is default to D9
 // v0.9b and v1.0 is default D10
-const int SPI_CS_PIN = 9;
+const int SPI_CS_PIN    = 9;
 
 MCP_CAN CAN(SPI_CS_PIN);                                    // Set CS pin
 
-
-unsigned char flagRecv = 0;
-unsigned char len = 0;
+unsigned char flagRecv  = 0;
+unsigned char len       = 0;
 unsigned char buf[8];
 char str[20];
 
@@ -37,6 +36,7 @@ void MCP2515_ISR()
     flagRecv = 1;
 }
 
+// {id, }
 void loop()
 {
     if(flagRecv) 
@@ -61,6 +61,8 @@ void loop()
             Serial.println();
         }
     }
+    
+    
 }
 
 /*********************************************************************************************************
