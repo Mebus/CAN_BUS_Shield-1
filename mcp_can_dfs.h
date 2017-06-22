@@ -544,6 +544,13 @@
 #define CANDEFAULTIDENT     (0x55CC)
 #define CANDEFAULTIDENTEXT  (CAN_EXTID)
 
+
+
+#define MCP_STDEXT   0                                                  // Standard and Extended
+#define MCP_STD      1                                                  // Standard IDs ONLY
+#define MCP_EXT      2                                                  // Extended IDs ONLY
+#define MCP_ANY      3                                                  // Disables Masks and Filters
+
 #define MCP_20MHZ    0
 #define MCP_16MHZ    1
 #define MCP_8MHZ     2

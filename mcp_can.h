@@ -126,13 +126,13 @@ public:
     byte init_Mask(byte num, unsigned long ulData);              // Initilize Mask(s)
     byte init_Filt(byte num, byte ext, unsigned long ulData);    // Initilize Filter(s)
     byte init_Filt(byte num, unsigned long ulData);              // Initilize Filter(s)
-    byte mcp2515_setMode(byte opMode);                           // Set operational mode
+    byte setMode(byte opMode);                                   // Set operational mode
     byte sendMsgBuf(unsigned long id, byte ext, byte rtr, byte len, byte *buf);     // Send message to transmit buffer
     byte sendMsgBuf(unsigned long id, byte len, byte *buf);                         // Send message to transmit buffer
     byte sendMsgBuf(unsigned long id, byte ext, byte len, byte *buf);               // Send message to transmit buffer
-    byte readMsgBuf(byte *len, byte *buf);                       // read buf
-    byte readMsgBufID(unsigned long *ID, byte *len, byte *buf);  // read buf with object ID
-    byte readMsgBufID(unsigned long *ID, byte *ext, byte *len, byte *buf);          // Read message from receive buffer
+    byte readMsgBuf(byte *len, byte *buf);                       // Read message from receive buffer
+    byte readMsgBufID(unsigned long *ID, byte *len, byte *buf);  // Read message with ID from receive buffer
+    byte readMsgBufID(unsigned long *ID, byte *ext, byte *len, byte *buf);          // Read message with ID from receive buffer
     byte checkReceive(void);                                     // Check for received data
     byte checkError(void);                                       // Check for errors
     byte getError(void);                                         // Check for errors
