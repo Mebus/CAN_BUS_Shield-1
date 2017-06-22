@@ -23,6 +23,9 @@ Same goes for B**1**BF…
 
 You can - for example - connect RX0BF to the Rs-pin of an PCA82C250 and use this GPIO to shutdown the transceiver on TX-only- or polling nodes saving additional power.
 
+### Support for 4MHz-Modules
+
+Based on the work of [Cory J. Fowler](https://github.com/coryjfowler/MCP_CAN_lib/) the code was extended to also support modules using a 4MHz crystal. All configuration values where recalculated to archive minimal deviation. These values are just calculated and not thoroughly tested, but you do use prototypes before hooking anything up to important communication systems, right?
 
 ---
 ## The CAN-Bus
