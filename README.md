@@ -1,10 +1,10 @@
-CAN BUS Shield
----------------------------------------------------------
+# CAN BUS Shield
+---
 
-# Fork Details
+## Fork Details
 This fork of Seeed-Studios CAN shield library abopts little enhancements to interface 3rd party boards. Current changes:
 
-## Use TX/RX-interrupt-pins as GPIO
+### Use TX/RX-interrupt-pins as GPIO
 
 The TX and RC interrupt pins of a MCP2515 can be used as generic GPIO. This changes add the capability to control the pins using the following commands:
 
@@ -23,165 +23,182 @@ Same goes for B**1**BF…
 
 You can - for example - connect RX0BF to the Rs-pin of an PCA82C250 and use this GPIO to shutdown the transceiver on TX-only- or polling nodes saving additional power.
 
-<br>
-CAN-BUS is a common industrial bus because of its long travel distance, medium communication speed and high reliability. It is commonly found on modern machine tools and as an automotive diagnostic bus. The Seeed-Studio CAN-BUS Shield adopts MCP2515 CAN Bus controller with SPI interface and MCP2551 CAN transceiver to give your Arduino/Seeeduino CAN-BUS capibility. With an OBD-II converter cable added on and the OBD-II library imported, you are ready to build an onboard diagnostic device or data logger.
 
-- Implements CAN V2.0B at up to 1 Mb/s
-- SPI Interface up to 10 MHz
-- Standard (11 bit) and extended (29 bit) data and remote frames
-- Two receive buffers with prioritized message storage
-- Industrial standard 9 pin sub-D connector
-- Two LED indicators
+---
+## The CAN-Bus
+CAN-BUS is a common industrial bus because of its long travel distance, medium communication speed and high reliability. It is commonly found on modern machine tools and as an automotive diagnostic bus.
 
+## This Library
+This library can be used to interface an Arduino compatible AVR-board to most CAN modules based on a MCP2515.
 
-
-<br>
 # Installation:
 
-	git clone https://github.com/adlerweb/CAN_BUS_Shield.git
+Download the ZIP and use arduinos "Add Zip"-function to install it. Keep in mind to delete other versions of this library if you used it or similar forks in the past.
 
-or download the zip.
-
-<br>
 # Usage:
 
+You'll have a new option in Sketch -> Include Library -> CAN_BUS_Shield.  There are some examplex included.
 
-
-Simply copy the CAN_BUS_Shield folder to your Arduino library collection.  For example,
-arduino-1.6.12/libraries.  Next time you run the Arduino IDE, you'll have a new option
-in Sketch -> Include Library -> CAN_BUS_Shield.  Review the included examples in 
-CAN_BUS_Shield/examples.
-
-
-
-## 1. Set the BaudRate
-
+## 1. Set CS-Pin, Mode, Clock and Baudrate
 This function is used to initialize the baudrate of the CAN Bus system.
 
-The available baudrates are listed as follows:
+The following modes are supported:
 
-	#define CAN_5KBPS    1
+    #define MCP_STDEXT   0                                                  // Standard and Extended
+    #define MCP_ANY      3                                                  // Disables Masks and Filters
+
+Due to a bug in the MCP2515 silicon it is not possible to reliably match only standard or only extended IDs. If you need to filter this way you have to implement it in software. In doubt use MCP_ANY.
+
+---
+
+The following CAN board clocks are supported:
+
+    #define MCP_20MHZ    0
+    #define MCP_16MHZ    1
+    #define MCP_8MHZ     2
+    #define MCP_4MHZ     3
+
+Most boards use 16MHz, just look at the crystal soldered to your module
+
+---
+
+The following baudrates are available:
+
+	#define CAN_5KBPS    1 (Not on 20MHz)
 	#define CAN_10KBPS   2
 	#define CAN_20KBPS   3
 	#define CAN_25KBPS   4 
 	#define CAN_31K25BPS 5
-	#define CAN_33KBPS   6
+	#define CAN_33KBPS   6 (33.333kBps)
 	#define CAN_40KBPS   7
 	#define CAN_50KBPS   8
 	#define CAN_80KBPS   9
-	#define CAN_83K3BPS  10
-	#define CAN_95KBPS   11
+	#define CAN_83K3BPS  10 (83.333kBps)
+	#define CAN_95KBPS   11 (95.238kBps)
 	#define CAN_100KBPS  12
 	#define CAN_125KBPS  13
 	#define CAN_200KBPS  14
 	#define CAN_250KBPS  15
-	#define CAN_500KBPS  16
-	#define CAN_666kbps  17
-	#define CAN_1000KBPS 18
+	#define CAN_500KBPS  16 (Not on 4MHz)
+	#define CAN_666kbps  17 (666.666kBps, Not on 4MHz)
+	#define CAN_1000KBPS 18 (Not on 4MHz and 8MHz)
 
+You are free to choose any rate you want as long as all senders and receivers are configured equal. Some rates may not be available with certain crystals. Faster rates enable you to transfer more data, slower rates are more reliable and allow to transfer over a greater distance.
 
-<br>
+---
+
+The initialization might look this way:
+
+```C
+include <SPI.h>
+#include "mcp_can.h"
+
+MCP_CAN CAN(10); //Use Hardware SPI and Pin 10 for CS
+
+void setup()
+{
+    while (CAN_OK != CAN.begin(CAN_500KBPS))              // init can bus : baudrate = 500k
+    {
+        Serial.println("CAN init failed");
+        delay(100);
+    }
+    Serial.println("CAN init OK");
+}
+
+```
 
 ##2. Set Receive Mask and Filter
 
-There are 2 receive mask registers and 5 filter registers on the controller chip that guarantee you get data from the target device. They are useful especially in a large network consisting of numerous nodes.
+There are 2 receive mask registers and 5 filter registers on the controller chip. Using these you can filter incoming messages on the CAN controller avoiding to clutter your arduino. They are useful especially in a large network consisting of numerous nodes.
 
-We provide two functions for you to utilize these mask and filter registers. They are:
 
     init_Mask(unsigned char num, unsigned char ext, unsigned char ulData);
     init_Filt(unsigned char num, unsigned char ext, unsigned char ulData);
 
-**num** represents which register to use. You can fill 0 or 1 for mask and 0 to 5 for filter.
-
-**ext** represents the status of the frame. 0 means it's a mask or filter for a standard frame. 1 means it's for a extended frame.
-
+**num** represents which register to use. You can use 0 or 1 for mask sand 0 to 5 for filters.
+**ext** represents the status of the frame. 0 means it's a mask or filter for a standard address. 1 means it's for a extended address.
 **ulData** represents the content of the mask of filter.
 
-
-
-<br>
 ## 3. Check Receive
 The MCP2515 can operate in either a polled mode, where the software checks for a received frame, or using additional pins to signal that a frame has been received or transmit completed.  Use the following function to poll for received frames.
 
-    INT8U MCP_CAN::checkReceive(void);
+    byte MCP_CAN::checkReceive(void);
 
-The function will return 1 if a frame arrives, and 0 if nothing arrives.
+The function will return 1 if a frame was received and 0 if there are no frames available.
 
-
-
-<br>
 ## 4. Get CAN ID
 
-When some data arrives, you can use the following function to get the CAN ID of the "send" node.
+When data arrives, you can use the following function to get the CAN ID of the message.
 
-    INT32U MCP_CAN::getCanId(void);
+    unsigned long MCP_CAN::getCanId(void);
 
-
-
-<br>
 ## 5. Send Data
 
-    CAN.sendMsgBuf(INT32U id, INT8U ext, INT8U len, INT8U *buf);
+    CAN.sendMsgBuf(unsigned long id, byte ext, byte len, byte *buf);
 
-This is a function to send data onto the bus. In which:
-
-**id** represents where the data come from.
-
-**ext** represents the status of the frame. '0' means standard frame. '1' means extended frame.
-
-**len** represents the length of this frame.
-
+**id** represents the CAN ID
+**ext** represents the type of the frame. '0' means standard frame. '1' means extended frame.
+**len** represents the number of bytes in buf.
 **buf** is the content of this message.
 
-For example, In the 'send' example, we have:
-
-<pre>  
+```C  
 unsigned char stmp[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 
-CAN.sendMsgBuf(0x00, 0, 8, stmp); //send out the message 'stmp' to the bus and tell other devices this is a standard frame from 0x00.
-</pre>
+CAN.sendMsgBuf(0x00, 0, 8, stmp); //send the 8-byte-message 'stmp' to the bus and tell other devices this is a standard frame from 0x00.
+```
 
-
-
-<br>
 ## 6. Receive Data
 
-The following function is used to receive data on the 'receive' node:
+The following function is used to receive data:
 
-    CAN.readMsgBuf(INT8U *len, INT8U *buf);
+    CAN.readMsgBuf(byte *len, byte *buf);
 
-Under the condition that masks and filters have been set, this function will only get frames that meet the requirements of those masks and filters.
+Under the condition that masks and filters have been set, this function will only return frames that meet the requirements of those masks and filters.
 
-**len** represents the data length.
+**len** represents the number of bytes in buf.
+**buf** is where the data is stored.
 
-**buf** is where you store the data.
+If you also want to process the CAN-ID it can be returned as well:
 
-<br>
+    byte MCP_CAN::readMsgBufID(unsigned long *ID, byte *ext, byte *len, byte buf[])
+    
+**ID** represents the CAN-ID.
+**ext** represents type of the frame. '0' means standard frame. '1' means extended frame.
+**len** represents the number of bytes in buf.
+**buf** is where the data is stored.
+
 ## 7. Check additional flags
 
-When frame is received you may check whether it was remote request and whether it was an extended (29bit) frame.
+When a frame was received you may check whether it was remote request and whether it was an extended (29bit) frame.
 
     CAN.isRemoteRequest();
     CAN.isExtendedFrame();
 
 **return value** is '0' for a negative response and '1' for a positive
 
-
-<br>
-For more information, please refer to [wiki page](http://www.seeedstudio.com/wiki/CAN-BUS_Shield).
-
-    
 ----
 
-This software is written by loovee ([luweicong@seeed.cc](luweicong@seeed.cc "luweicong@seeed.cc")) for seeed studio<br>
-and is licensed under [The MIT License](http://opensource.org/licenses/mit-license.php). Check License.txt for more information.<br>
+# Authors
 
-Contributing to this software is warmly welcomed. You can do this basically by<br>
-[forking](https://help.github.com/articles/fork-a-repo), committing modifications and then [pulling requests](https://help.github.com/articles/using-pull-requests) (follow the links above<br>
-for operating guide). Adding change log and your contact into file header is encouraged.<br>
-Thanks for your contribution.
+This software was written by loovee ([luweicong@seeed.cc](luweicong@seeed.cc "luweicong@seeed.cc")) for seeed studio
+and is licensed under [The MIT License](http://opensource.org/licenses/mit-license.php). Check License.txt for more information.
+The original code is located at https://github.com/Seeed-Studio/CAN_BUS_Shield
 
-Seeed Studio is an open hardware facilitation company based in Shenzhen, China. <br>
-Benefiting from local manufacture power and convenient global logistic system, <br>
-we integrate resources to serve new era of innovation. Seeed also works with <br>
-global distributors and partners to push open hardware movement.<br>
+The original code for supporting boards with crystals other than 16MHz as well as several code cleanups where written by Cory J. Fowler
+You can find his code at https://github.com/coryjfowler/MCP_CAN_lib
+
+This fork was created by Florian Knodt for use with aSysBus. The code is located at https://github.com/adlerweb/CAN_BUS_Shield
+
+Additional Contributors:
+  * Latonita
+  * Woodward1
+  * Mehtajaghvi
+  * BykeBlast
+  * TheRo0T
+  * Tsipizic
+  * ralfEdmund
+  * Nathancheek
+  * BlueAndi
+  * Btetz
+  * Hurvajs
+  * xboxpro1
