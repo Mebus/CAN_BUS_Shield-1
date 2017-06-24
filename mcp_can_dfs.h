@@ -248,7 +248,7 @@
 #define B1BFM           0x02
 #define B0BFM           0x01
 
-//TXRTCTRL Register Bits
+// TXRTCTRL Register Bits
 
 #define B2RTS           0x20
 #define B1RTS           0x10
@@ -604,8 +604,8 @@
 #define MCP_RXBUF_0 (MCP_RXB0SIDH)
 #define MCP_RXBUF_1 (MCP_RXB1SIDH)
 
-#define MCP2515_SELECT()   digitalWrite(SPICS, LOW)
-#define MCP2515_UNSELECT() digitalWrite(SPICS, HIGH)
+#define MCP2515_SELECT()   ::digitalWrite(SPICS, LOW)
+#define MCP2515_UNSELECT() ::digitalWrite(SPICS, HIGH)
 
 #define MCP2515_OK         (0)
 #define MCP2515_FAIL       (1)
@@ -617,6 +617,16 @@
 
 #define CANSENDTIMEOUT (200)                                            // milliseconds
 
+#define MCP_PIN_HIZ (0)
+#define MCP_PIN_INT (1)
+#define MCP_PIN_OUT (2)
+#define MCP_PIN_IN  (3)
+
+#define MCP_RX0BF (0)
+#define MCP_RX1BF (1)
+#define MCP_TX0RTS (2)
+#define MCP_TX1RTS (3)
+#define MCP_TX2RTS (4)
 
 // initial value of gCANAutoProcess
 

@@ -144,6 +144,10 @@ public:
     unsigned long getCanId(void);                                // get can id when receive
     byte isRemoteRequest(void);                                  // get RR flag when receive
     byte isExtendedFrame(void);                                  // did we recieve 29bit frame?
+
+    bool pinMode(const byte pin, const byte mode);               // switch supported pins between HiZ, interrupt, output or input
+    bool digitalWrite(const byte pin, const byte mode);          // write HIGH or LOW to RX0BF/RX1BF
+    byte digitalRead(const byte pin);                            // read HIGH or LOW from supported pins
 };
 
 #endif
