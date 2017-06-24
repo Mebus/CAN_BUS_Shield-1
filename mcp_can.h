@@ -122,6 +122,7 @@ private:
 public:
     MCP_CAN(byte _CS);
     byte begin(byte idmodeset, byte speedset, byte clockset);    // Initilize controller prameters
+    byte begin(byte speedset);                                   // Initilize controller prameters
     byte init_Mask(byte num, byte ext, unsigned long ulData);    // Initilize Mask(s)
     byte init_Mask(byte num, unsigned long ulData);              // Initilize Mask(s)
     byte init_Filt(byte num, byte ext, unsigned long ulData);    // Initilize Filter(s)

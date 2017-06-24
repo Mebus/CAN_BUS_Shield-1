@@ -1041,6 +1041,15 @@ byte MCP_CAN::begin(byte idmodeset, byte speedset, byte clockset)
 }
 
 /*********************************************************************************************************
+** Function name:           begin
+** Descriptions:            Public function to declare controller initialization parameters. Compat.
+*********************************************************************************************************/
+byte MCP_CAN::begin(byte speedset)
+{
+    return begin(MCP_ANY, speedset, MCP_16MHZ);
+}
+
+/*********************************************************************************************************
 ** Function name:           init_Mask
 ** Descriptions:            Public function to set mask(s).
 *********************************************************************************************************/
