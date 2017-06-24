@@ -463,6 +463,111 @@ byte MCP_CAN::mcp2515_configRate(const byte canSpeed, const byte canClock)
         }
         break;
 
+        case (MCP_10MHZ):
+        switch(canSpeed)
+        {
+            case (CAN_5KBPS):
+            cfg1 = MCP_10MHz_5kBPS_CFG1;
+            cfg2 = MCP_10MHz_5kBPS_CFG2;
+            cfg3 = MCP_10MHz_5kBPS_CFG3;
+            break;
+
+            case (CAN_10KBPS):
+            cfg1 = MCP_10MHz_10kBPS_CFG1;
+            cfg2 = MCP_10MHz_10kBPS_CFG2;
+            cfg3 = MCP_10MHz_10kBPS_CFG3;
+            break;
+
+            case (CAN_20KBPS):
+            cfg1 = MCP_10MHz_20kBPS_CFG1;
+            cfg2 = MCP_10MHz_20kBPS_CFG2;
+            cfg3 = MCP_10MHz_20kBPS_CFG3;
+            break;
+
+            case (CAN_25KBPS):
+            cfg1 = MCP_10MHz_25kBPS_CFG1;
+            cfg2 = MCP_10MHz_25kBPS_CFG2;
+            cfg3 = MCP_10MHz_25kBPS_CFG3;
+            break;
+
+            case (CAN_31K25BPS):
+            cfg1 = MCP_10MHz_31k25BPS_CFG1;
+            cfg2 = MCP_10MHz_31k25BPS_CFG2;
+            cfg3 = MCP_10MHz_31k25BPS_CFG3;
+            break;
+
+            case (CAN_33K3BPS):
+            cfg1 = MCP_10MHz_33k3BPS_CFG1;
+            cfg2 = MCP_10MHz_33k3BPS_CFG2;
+            cfg3 = MCP_10MHz_33k3BPS_CFG3;
+            break;
+
+            case (CAN_40KBPS):
+            cfg1 = MCP_10MHz_40kBPS_CFG1;
+            cfg2 = MCP_10MHz_40kBPS_CFG2;
+            cfg3 = MCP_10MHz_40kBPS_CFG3;
+            break;
+
+            case (CAN_50KBPS):
+            cfg1 = MCP_10MHz_50kBPS_CFG1;
+            cfg2 = MCP_10MHz_50kBPS_CFG2;
+            cfg3 = MCP_10MHz_50kBPS_CFG3;
+            break;
+
+            case (CAN_83K3BPS):
+            cfg1 = MCP_10MHz_83k3BPS_CFG1;
+            cfg2 = MCP_10MHz_83k3BPS_CFG2;
+            cfg3 = MCP_10MHz_83k3BPS_CFG3;
+            break;
+
+            case (CAN_100KBPS):
+            cfg1 = MCP_10MHz_100kBPS_CFG1;
+            cfg2 = MCP_10MHz_100kBPS_CFG2;
+            cfg3 = MCP_10MHz_100kBPS_CFG3;
+            break;
+
+            case (CAN_125KBPS):
+            cfg1 = MCP_10MHz_125kBPS_CFG1;
+            cfg2 = MCP_10MHz_125kBPS_CFG2;
+            cfg3 = MCP_10MHz_125kBPS_CFG3;
+            break;
+
+            case (CAN_200KBPS):
+            cfg1 = MCP_10MHz_200kBPS_CFG1;
+            cfg2 = MCP_10MHz_200kBPS_CFG2;
+            cfg3 = MCP_10MHz_200kBPS_CFG3;
+            break;
+
+            case (CAN_250KBPS):
+            cfg1 = MCP_10MHz_250kBPS_CFG1;
+            cfg2 = MCP_10MHz_250kBPS_CFG2;
+            cfg3 = MCP_10MHz_250kBPS_CFG3;
+            break;
+
+            case (CAN_500KBPS):
+            cfg1 = MCP_10MHz_500kBPS_CFG1;
+            cfg2 = MCP_10MHz_500kBPS_CFG2;
+            cfg3 = MCP_10MHz_500kBPS_CFG3;
+            break;
+
+            case (CAN_1000KBPS):
+            cfg1 = MCP_10MHz_1000kBPS_CFG1;
+            cfg2 = MCP_10MHz_1000kBPS_CFG2;
+            cfg3 = MCP_10MHz_1000kBPS_CFG3;
+            break;
+
+            default:
+            set = 0;
+#if DEBUG_EN
+            Serial.print("canSpeed invalid or not supported with this canClock...\r\n");
+#else
+            delay(10);
+#endif
+            return MCP2515_FAIL;
+            break;
+        }
+        break;
+
         case (MCP_16MHZ):
         switch(canSpeed)
         {

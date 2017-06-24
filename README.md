@@ -58,8 +58,9 @@ The following CAN board clocks are supported:
 
     #define MCP_20MHZ    0
     #define MCP_16MHZ    1
-    #define MCP_8MHZ     2
-    #define MCP_4MHZ     3
+    #define MCP_10MHZ    2
+    #define MCP_8MHZ     3
+    #define MCP_4MHZ     4
 
 Most boards use 16MHz, just look at the crystal soldered to your module
 
@@ -67,23 +68,23 @@ Most boards use 16MHz, just look at the crystal soldered to your module
 
 The following baudrates are available:
 
-	#define CAN_5KBPS    1 (Not on 20MHz)
+	#define CAN_5KBPS    1  (Not on 20MHz)
 	#define CAN_10KBPS   2
 	#define CAN_20KBPS   3
 	#define CAN_25KBPS   4 
 	#define CAN_31K25BPS 5
-	#define CAN_33KBPS   6 (33.333kBps)
+	#define CAN_33KBPS   6  (33.333kBps)
 	#define CAN_40KBPS   7
 	#define CAN_50KBPS   8
-	#define CAN_80KBPS   9
+	#define CAN_80KBPS   9  (Not on 10MHz)
 	#define CAN_83K3BPS  10 (83.333kBps)
-	#define CAN_95KBPS   11 (95.238kBps)
+	#define CAN_95KBPS   11 (95.238kBps, Not on 10MHz)
 	#define CAN_100KBPS  12
 	#define CAN_125KBPS  13
 	#define CAN_200KBPS  14
 	#define CAN_250KBPS  15
 	#define CAN_500KBPS  16 (Not on 4MHz)
-	#define CAN_666kbps  17 (666.666kBps, Not on 4MHz)
+	#define CAN_666kbps  17 (666.666kBps, Not on 4MHz and 10MHz)
 	#define CAN_1000KBPS 18 (Not on 4MHz and 8MHz)
 
 You are free to choose any rate you want as long as all senders and receivers are configured equal. Some rates may not be available with certain crystals. Faster rates enable you to transfer more data, slower rates are more reliable and allow to transfer over a greater distance.
