@@ -1056,16 +1056,16 @@ void MCP_CAN::mcp2515_read_id(const byte mcp_addr, byte* ext, unsigned long* id)
 ** Function name:           mcp2515_write_canMsg
 ** Descriptions:            Write message
 *********************************************************************************************************/
-void MCP_CAN::mcp2515_write_canMsg(const byte buffer_sidh_addr)
+void MCP_CAN::mcp2515_write_canMsg(const byte buffer_sidh_addr, bool rtrBit)
 {
     byte mcp_addr;
     mcp_addr = buffer_sidh_addr;
     mcp2515_setRegisterS(mcp_addr+5, dta, dta_len);              // write data bytes
-    if(rtr == 1)                                       // if RTR set bit in byte
+    if(rtrBit)                                                   // if RTR set bit in byte
     {
         dta_len |= MCP_RTR_MASK;
     }
-    mcp2515_setRegister((mcp_addr+4), dta_len);                    // write the RTR and DLC
+    mcp2515_setRegister((mcp_addr+4), dta_len);                  // write the RTR and DLC
     mcp2515_write_id(mcp_addr, ext_flg, can_id);                 // write CAN id
 
 }
@@ -1403,7 +1403,7 @@ byte MCP_CAN::clearMsg()
 ** Function name:           sendMsg
 ** Descriptions:            Send message
 *********************************************************************************************************/
-byte MCP_CAN::sendMsg()
+byte MCP_CAN::sendMsg(bool rtrBit)
 {
     byte res, res1, txbuf_n;
     uint16_t uiTimeOut = 0;
@@ -1419,7 +1419,7 @@ byte MCP_CAN::sendMsg()
     }
 
     uiTimeOut = 0;
-    mcp2515_write_canMsg(txbuf_n);
+    mcp2515_write_canMsg(txbuf_n, rtrBit);
     mcp2515_start_transmit(txbuf_n);
 
     do {
@@ -1443,7 +1443,7 @@ byte MCP_CAN::sendMsg()
 byte MCP_CAN::sendMsgBuf(unsigned long id, byte ext, byte rtr, byte len, byte *buf)
 {
     setMsg(id, ext, len, rtr, buf);
-    return sendMsg();
+    return sendMsg(rtr);
 }
 
 /*********************************************************************************************************
@@ -1453,7 +1453,7 @@ byte MCP_CAN::sendMsgBuf(unsigned long id, byte ext, byte rtr, byte len, byte *b
 byte MCP_CAN::sendMsgBuf(unsigned long id, byte ext, byte len, byte *buf)
 {
     setMsg(id, ext, len, buf);
-    return sendMsg();
+    return sendMsg(false);
 }
 
 /*********************************************************************************************************

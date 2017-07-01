@@ -106,7 +106,7 @@ private:
                           byte* ext,
                           unsigned long* id);
 
-    void mcp2515_write_canMsg(const byte buffer_sidh_addr);     // Write CAN message
+    void mcp2515_write_canMsg(const byte buffer_sidh_addr, bool rtrBit);        // Write CAN message
     void mcp2515_read_canMsg(const byte buffer_sidh_addr);      // Read CAN message
     void mcp2515_start_transmit(const byte mcp_addr);           // Start transmission
     byte mcp2515_getNextFreeTXBuf(byte *txbuf_n);               // Find empty transmit buffer
@@ -117,7 +117,7 @@ private:
     byte setMsg(unsigned long id, byte ext, byte len, byte *pData);             // Set message
     byte clearMsg();                                             // Clear all message to zero
     byte readMsg();                                              // Read message
-    byte sendMsg();                                              // Send message
+    byte sendMsg(bool rtrBit);                                   // Send message
 
 public:
     MCP_CAN(byte _CS);
