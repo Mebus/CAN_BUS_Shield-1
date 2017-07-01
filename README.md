@@ -2,30 +2,15 @@
 ---
 
 ## Fork Details
-This fork of Seeed-Studios CAN shield library abopts little enhancements to interface 3rd party boards. Current changes:
+This fork of Seeed-Studios CAN shield library adopts several enhancements to interface 3rd party boards more easily and expose additinal functionality. Current changes:
 
-### Use TX/RX-interrupt-pins as GPIO
-
-The TX and RC interrupt pins of a MCP2515 can be used as generic GPIO. This changes add the capability to control the pins using the following commands:
-
-```c
-// Set RX0BF as GPIO
-mcp2515_modifyRegister(MCP_BFPCTRL, B0BFM | B0BFE  | B0BFS, B0BFE);
-
-//Turn RX0BF on
-mcp2515_modifyRegister( MCP_BFPCTRL, B0BFS, 0);
-
-//Turn RX0BF off
-mcp2515_modifyRegister( MCP_BFPCTRL, B0BFS, 1);
-```
-
-Same goes for B**1**BF…
-
-You can - for example - connect RX0BF to the Rs-pin of an PCA82C250 and use this GPIO to shutdown the transceiver on TX-only- or polling nodes saving additional power.
-
-### Support for 4MHz-Modules
-
-Based on the work of [Cory J. Fowler](https://github.com/coryjfowler/MCP_CAN_lib/) the code was extended to also support modules using a 4MHz crystal. All configuration values where recalculated to archive minimal deviation. These values are just calculated and not thoroughly tested, but you do use prototypes before hooking anything up to important communication systems, right?
+ * Use overflow-status-pins as digital output
+ * Use RTS-pins as digital input
+ * Merged multi-crystal-support and code cleanup of MCP_CAN_lib by [Cory J. Fowler](https://github.com/coryjfowler/MCP_CAN_lib/)
+ * Recalculated all speed configuration values for consistent behaviour, added missing baudrates
+ * Added support for modules with 4MHz and 10MHz crystals
+ 
+Please note: All changes should be considered experimental. Use at your own risk.
 
 ---
 ## The CAN-Bus
